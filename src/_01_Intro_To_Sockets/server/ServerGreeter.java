@@ -1,6 +1,9 @@
 package _01_Intro_To_Sockets.server;
 
 import java.net.*;
+
+import javax.swing.JOptionPane;
+
 import java.io.*;
 
 public class ServerGreeter extends Thread {
@@ -21,12 +24,12 @@ public class ServerGreeter extends Thread {
 			while (b = true) {
 				try {
 					System.out.println("Waiting for client to connect...");
-					Socket socket = new Socket(serverSocket.accept());
+					Socket socket = serverSocket.accept();
 					System.out.println("Client has connected!");
 					DataInputStream dis = new DataInputStream(socket.getInputStream());
 					System.out.println(dis.readUTF());
 					DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
-					dos.writeUTF("Message");
+					dos.writeUTF(JOptionPane.showInputDialog("Enter a message:"));
 					socket.close();
 				} catch(IOException e) {
 					System.out.println("An error has occurred.");
@@ -66,6 +69,7 @@ public class ServerGreeter extends Thread {
 		Thread a = new Thread(()->{
 			try {
 				ServerGreeter sg = new ServerGreeter();
+				sg.run();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
